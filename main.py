@@ -11,7 +11,6 @@ client = discord.Client(intents=discord.Intents.default())
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
-    # await message.channel.send('Hello!')
 
 context = ""
 
