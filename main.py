@@ -20,17 +20,16 @@ async def on_message(message):
     if message.author == client.user or message.channel is None:
         return
 
-    if '#new context' in message.content:
+    # Clear prompt context manually (or automatically if context gets too long)
+    if '#new context' in message.content or len(context) > 1000:
         context = ""
         await message.channel.send("Context cleared")
+        
+    if '#new context' in message.content:
         return
 
-
-    # Load your API key from an environment variable or secret management service
     openai.api_key = os.getenv("OPENAI_API_KEY")
-
     context += f"Person 1: {message.content}\nPerson 2:"
-
     response = openai.Completion.create(model="text-davinci-002", prompt=context, temperature=0.2, max_tokens=20)
     context += f" {response.choices[0].text}\n"
     await message.channel.send(response.choices[0].text)
